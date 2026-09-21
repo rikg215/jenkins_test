@@ -1,60 +1,35 @@
-def gv
-
 pipeline {
-
     agent any
-    parameters {
-        choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description:'')
-        booleanParam(name: 'executeTests', defaultValue: true, description: '')
-}
-
+    tools {
+        maven 'maven-3.9'
+    }
     stages {
-        stage("init"){
-           
-             steps {
-		         script {
-                    gv = load "script.groovy"
-                 }
-             }
-        }
-        stage("build"){
-           
-             steps {
-		         script {
-                    gv.buildApp()
-                 }
-             }
-        }
-        stage("test"){
-            when {
-                expression {
-                    params.executeTests
-                 }
+        stage("build jar") {
+            steps {
+                script{
+                    echo "building the application..."
+                    sh 'mvn package'
+                }
             }
-
-             steps {
-		        script {
-                    gv.testApp()
-                }
-	     }
         }
-        stage("deploy"){
-             input{
-                message " Select the environment to deploy to"
-                ok "Done"
-                parameters{
-                    choice(name: 'ONE', choices: ['dev', 'staging', 'production'], description:'')
-                    choice(name: 'TWO', choices: ['dev', 'staging', 'production'], description:'')
+        stage("build image") {
+            steps {
+                script{
+                    echo "building the docker image..."
+                    withCredentials([usernamePassword(credentialsId: 'rik215', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                        sh 'docker build -t rik215/bootcamp-test:jma-2.0 .'
+                        sh 'echo $PASS | docker login -u $USER --password-stdin'
+                        sh 'docker push rik215/bootcamp-test:jma-2.0'
+                    }
                 }
-             }
-             steps {
-                script {
-                    gv.deployApp()
-                    echo "deploying to ${ONE}"
-                    echo "deploying to ${TWO}"
+            }
+        }
+        stage("deploy") {
+            steps {
+                script{
+                    echo "deploying the application..."
                 }
-	         }
-        } 
+            }
+        }
     }
 }
-
