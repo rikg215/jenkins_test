@@ -25,7 +25,7 @@ pipeline {
         stage("build image") {
             steps {
                 script{
-                    buildImage()
+                    buildImage 'rik215/demo-app:jma-3.0'
                 }
             }
         }
