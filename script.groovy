@@ -14,6 +14,7 @@ def buildImage() {
 
 def deployImage() {
     echo "deploying the application..."
+    echo "testing webhooks..."
 }
 
 return this
