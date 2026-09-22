@@ -22,10 +22,12 @@ pipeline {
                 }
             }
         }
-        stage("build image") {
+        stage("build and push image") {
             steps {
                 script{
                     buildImage 'rik215/demo-app:jma-3.0'
+                    dockerLogin()
+                    dockerPush 'rik215/demo-app:jma-3.0'
                 }
             }
         }
