@@ -27,4 +27,20 @@ def deployImage() {
     echo "testing webhooks....."
 }
 
+def commitVersion() {
+    withCredentials([usernamePassword(credentialsId: 'jenkins-pat-2', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+        sh 'git config --global user.email "rikg215@gmail.com"'
+        sh 'git config --global user.name "rikg215"'
+
+        sh 'git status'
+        sh 'git branch'
+        sh 'git config --list'
+
+        sh "git remote set-url origin https://${USER}:${PASS}@github.com/rikg215/jenkins_test.git"
+        sh 'git add ,'
+        sh 'git commit -m "ci: version bump'
+        sh 'git push origin HEAD:feature/Dockerfile'
+    }
+}
+
 return this
