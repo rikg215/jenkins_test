@@ -36,7 +36,7 @@ def commitVersion() {
         sh 'git branch'
         sh 'git config --list'
 
-        sh "git remote set-url origin https://${USER}:${PASS}@github.com/rikg215/jenkins_test.git"
+        sh 'git remote set-url origin "https://${USER}:${PASS}@github.com/rikg215/jenkins_test.git"'
         sh 'git add ,'
         sh 'git commit -m "ci: version bump'
         sh 'git push origin HEAD:feature/Dockerfile'
