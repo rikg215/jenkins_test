@@ -29,8 +29,8 @@ def deployImage() {
 
 def commitVersion() {
     withCredentials([usernamePassword(credentialsId: 'jenkins-pat-2', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-        sh 'git config --global user.email "rikg215@gmail.com"'
-        sh 'git config --global user.name "rikg215"'
+        sh 'git config --global user.email "jenkins@example.com"'
+        sh 'git config --global user.name "jenkins"'
 
         sh 'git status'
         sh 'git branch'
