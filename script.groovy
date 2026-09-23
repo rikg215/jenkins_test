@@ -14,7 +14,7 @@ def buildJar() {
 }
 
 def buildImage() {
-    echo "building the docker image..."
+    echo "building the docker image...."
     withCredentials([usernamePassword(credentialsId: 'rik215', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
         sh "docker build -t rik215/bootcamp-test:${IMAGE_NAME} ."
         sh 'echo $PASS | docker login -u $USER --password-stdin'
